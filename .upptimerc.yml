@@ -35,6 +35,6 @@ status-website:
     - title: wealthtechpros.com
       href: https://wealthtechpros.com
 
-notifications:
-  - type: microsoft-teams
-    webhook: $TEAMS_WEBHOOK_URL
+# notifications:
+#   - type: microsoft-teams
+#     webhook: $TEAMS_WEBHOOK_URL
