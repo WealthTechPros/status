@@ -1,31 +1,40 @@
-# Change these first
-owner: upptime # Your GitHub organization or username, where this repository lives
-repo: upptime # The name of this repository
+owner: WealthTechPros
+repo: status
 
 sites:
-  - name: Google
-    url: https://www.google.com
-  - name: Wikipedia
-    url: https://en.wikipedia.org
-  - name: Hacker News
-    url: https://news.ycombinator.com
-  - name: Test Broken Site
-    url: https://thissitedoesnotexist.koj.co
+  - name: Client Onboarding — Prod
+    url: https://clientonboarding.wealthtechpros.com
+  - name: Client Onboarding — Login
+    url: https://login.clientonboarding.wealthtechpros.com
+  - name: Client Onboarding — Benchmark
+    url: https://benchmark.clientonboarding.wealthtechpros.com
+  - name: Client Onboarding — Staging
+    url: https://staging.clientonboarding.wealthtechpros.com
+  - name: Platform Automation Proxy
+    url: https://proxy.wealthtechpros.com
+  # SGD / RepoSentry — URL TBD, uncomment when known
+  # - name: SGD / RepoSentry
+  #   url: https://FILL_IN_SGD_URL
+  # WTP-MCP — URL TBD, uncomment when known
+  # - name: WTP-MCP
+  #   url: https://FILL_IN_WTP_MCP_URL
+  # SFTP — hostname TBD, uncomment when known
+  # - name: SFTP
+  #   url: tcp://FILL_IN_SFTP_HOSTNAME:22
+
+assignees:
+  - FILL_IN_ROB_GITHUB_USERNAME
+  - FILL_IN_DAVE_GITHUB_USERNAME
 
 status-website:
-  # Add your custom domain name, or remove the `cname` line if you don't have a domain
-  # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
-  cname: demo.upptime.js.org
-  # baseUrl: /your-repo-name
-  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
-  name: Upptime
-  introTitle: "**Upptime** is the open-source uptime monitor and status page, powered entirely by GitHub."
-  introMessage: This is a sample status page which uses **real-time** data from our [GitHub repository](https://github.com/upptime/upptime). No server required — just GitHub Actions, Issues, and Pages. [**Get your own for free**](https://github.com/upptime/upptime)
+  name: WealthTech Pros Status
+  description: Live health of WTP platform services
+  theme: light
+  cname: status.wealthtechpros.com
   navbar:
-    - title: Status
-      href: /
-    - title: GitHub
-      href: https://github.com/$OWNER/$REPO
+    - title: wealthtechpros.com
+      href: https://wealthtechpros.com
 
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+notifications:
+  - type: microsoft-teams
+    webhook: $TEAMS_WEBHOOK_URL
