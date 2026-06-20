@@ -23,8 +23,8 @@ sites:
   #   url: tcp://FILL_IN_SFTP_HOSTNAME:22
 
 assignees:
-  - FILL_IN_ROB_GITHUB_USERNAME
-  - FILL_IN_DAVE_GITHUB_USERNAME
+  - robaduncan
+  - Howarddj01
 
 status-website:
   name: WealthTech Pros Status
