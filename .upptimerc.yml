@@ -28,9 +28,12 @@ assignees:
 
 status-website:
   name: WealthTech Pros Status
-  description: Live health of WTP platform services
+  introTitle: "WealthTech Pros — Service Status"
+  introMessage: Live uptime and incident history for the WealthTech Pros platform. Back to [wealthtechpros.com](https://wealthtechpros.com).
   theme: light
   cname: status.wealthtechpros.com
+  logoUrl: https://status.wealthtechpros.com/logo.svg
+  favicon: https://status.wealthtechpros.com/favicon.svg
   navbar:
     - title: wealthtechpros.com
       href: https://wealthtechpros.com
