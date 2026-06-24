@@ -10,12 +10,15 @@ sites:
     url: https://benchmark.clientonboarding.wealthtechpros.com
   - name: Client Onboarding — Staging
     url: https://staging.clientonboarding.wealthtechpros.com
-  - name: Platform Automation Proxy
-    url: https://proxy.wealthtechpros.com
-  - name: SGD / RepoSentry
+  - name: SGD
     url: https://sgd.wealthtechpros.com
-  - name: WTP-MCP
+  - name: WTP MCP
     url: https://mcp.wealthtechpros.com
+  # Platform Automation Proxy — OFF. proxy.wealthtechpros.com does not resolve
+  # yet (the proxy is not deployed at that hostname).
+  # re-enable when proxy.wealthtechpros.com is live (not yet deployed, 2026-06-24)
+  # - name: Platform Automation Proxy
+  #   url: https://proxy.wealthtechpros.com
   # SFTP — intentionally OFF. The Azure SFTP feature costs ~£160/mo just to be
   # enabled, so it goes up ONLY for a paying client (decision 2026-06-20).
   # Re-add this monitor when wtp-sftp is live with enable_sftp=true:
