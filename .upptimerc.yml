@@ -15,7 +15,10 @@ sites:
   - name: WTP MCP
     url: https://mcp.wealthtechpros.com
   # Platform Automation Proxy — OFF. proxy.wealthtechpros.com does not resolve
-  # yet (the proxy is not deployed at that hostname).
+  # yet (NXDOMAIN — the proxy is not deployed at that hostname).
+  # The monitor was removed in #4; its auto-opened downtime incident (#1) was a
+  # FALSE ALARM (placeholder host, never deployed) and has been closed manually
+  # — Upptime cannot auto-close it once the monitor is gone (wtp-org #53).
   # re-enable when proxy.wealthtechpros.com is live (not yet deployed, 2026-06-24)
   # - name: Platform Automation Proxy
   #   url: https://proxy.wealthtechpros.com
