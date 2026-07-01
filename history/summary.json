@@ -40,18 +40,20 @@
     "url": "https://benchmark.clientonboarding.wealthtechpros.com",
     "icon": "https://icons.duckduckgo.com/ip3/benchmark.clientonboarding.wealthtechpros.com.ico",
     "slug": "client-onboarding-benchmark",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 479,
-    "timeDay": 532,
-    "timeWeek": 497,
-    "timeMonth": 479,
-    "timeYear": 479,
-    "dailyMinutesDown": {}
+    "time": 466,
+    "timeDay": 422,
+    "timeWeek": 474,
+    "timeMonth": 466,
+    "timeYear": 466,
+    "dailyMinutesDown": {
+      "2026-07-01": 0
+    }
   },
   {
     "name": "Client Onboarding — Staging",
