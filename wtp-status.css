@@ -185,6 +185,20 @@ html body article.graph {
   background-blend-mode: multiply;
 }
 
+/* align the stat rows: fixed label column so the uptime and response-time
+   value chips sit on the same vertical line (rows are separate divs, so only
+   a fixed column width can align them) */
+html body section.live-status article.graph > div {
+  display: grid;
+  grid-template-columns: 13em auto;
+  align-items: center;
+  justify-items: start;
+  margin: 0.2rem 0;
+}
+@media (max-width: 480px) {
+  html body section.live-status article.graph > div { display: block; }
+}
+
 /* label the sparkline so users know what the wave is (article is already
    position:relative via global.css) */
 html body article.graph::after {
