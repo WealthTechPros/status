@@ -36,9 +36,21 @@ status-website:
   name: WealthTech Pros Status
   introTitle: "WealthTech Pros — Service Status"
   introMessage: Live uptime and incident history for the WealthTech Pros platform. Back to [wealthtechpros.com](https://wealthtechpros.com).
-  theme: light
+  # dark is the fallback base; the real look is the WTP brand skin below.
+  # Brand source of truth: wtp-org/brand-assets/tokens.json (navy/Raleway kit).
+  # wtp-status.css + raleway-*.woff2 live in assets/ (copied from the kit) and
+  # are served from the site root.
+  theme: dark
+  # NB: asset URLs must be fully qualified (like logoUrl below) — the Sapper
+  # export crawler follows root-relative hrefs as routes, writes 404 pages at
+  # those paths, and the later asset copy fails with EISDIR (PR #10 review).
+  customHeadHtml: >-
+    <meta name="theme-color" content="#0b1437">
+    <link rel="preload" href="https://status.wealthtechpros.com/raleway-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://status.wealthtechpros.com/raleway-700.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://status.wealthtechpros.com/wtp-status.css">
   cname: status.wealthtechpros.com
-  logoUrl: https://status.wealthtechpros.com/logo.svg
+  logoUrl: https://status.wealthtechpros.com/logo.png
   favicon: https://status.wealthtechpros.com/favicon.svg
   navbar:
     - title: wealthtechpros.com
