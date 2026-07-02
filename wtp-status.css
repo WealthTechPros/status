@@ -199,6 +199,18 @@ html body section.live-status article.graph > div {
   html body section.live-status article.graph > div { display: block; }
 }
 
+/* product group headings inserted by wtp-group.js */
+html body .wtp-group-heading {
+  margin: 1.4rem 0 0.5rem;
+  padding-bottom: 0.3rem;
+  font-size: 0.95em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--wtp-teal-soft);
+  border-bottom: 1px solid rgba(104, 196, 205, 0.18);
+  opacity: 1;
+}
+
 /* one "response time" column header above the first card (right-aligned over
    the sparkline column) instead of a repeated per-card label */
 html body section.live-status::before {
