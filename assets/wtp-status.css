@@ -199,19 +199,18 @@ html body section.live-status article.graph > div {
   html body section.live-status article.graph > div { display: block; }
 }
 
-/* label the sparkline so users know what the wave is (article is already
-   position:relative via global.css) */
-html body article.graph::after {
+/* one "response time" column header above the first card (right-aligned over
+   the sparkline column) instead of a repeated per-card label */
+html body section.live-status::before {
   content: "response time";
-  position: absolute;
-  top: 0.5rem;
-  right: 0.75rem;
+  display: block;
+  text-align: right;
+  padding: 0 0.75rem 0.3rem 0;
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(143, 212, 219, 0.75);
-  pointer-events: none;
 }
 
 /* response-time value chip — solid surface + white text so it stays WCAG AA
