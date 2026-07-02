@@ -138,8 +138,16 @@ html body nav .logo {
   letter-spacing: 0.01em;
 }
 html body nav .logo img {
-  border-radius: 10px !important;
+  /* 3rem stock is too small to read the wordmark inside the roundel */
+  height: 4.5rem !important;
+  border-radius: 12px !important;
   filter: drop-shadow(0 0 10px rgba(104, 196, 205, 0.35));
+}
+
+/* the nav already carries the site name — the in-page intro header is
+   redundant (homepage only; subpages render no <main> header) */
+html body main header {
+  display: none;
 }
 html body nav ul a {
   color: var(--wtp-muted);
@@ -175,6 +183,21 @@ html body article h4 { margin-bottom: 0.25em; }
    so it reads as a subtle dark-teal wave instead of an opaque pale block */
 html body article.graph {
   background-blend-mode: multiply;
+}
+
+/* label the sparkline so users know what the wave is (article is already
+   position:relative via global.css) */
+html body article.graph::after {
+  content: "response time";
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(143, 212, 219, 0.75);
+  pointer-events: none;
 }
 
 /* response-time value chip — solid surface + white text so it stays WCAG AA
