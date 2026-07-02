@@ -1,0 +1,277 @@
+/* ==========================================================================
+   WealthTech Pros — Upptime status page brand skin
+   Source of truth: wtp-org/brand-assets/tokens.json (navy/Raleway brand kit).
+   Loaded via status-website.customHeadHtml in .upptimerc.yml, after
+   /themes/dark.css and /global.css. Overrides use html:root / html body so
+   they win regardless of stylesheet order.
+   ========================================================================== */
+
+/* ---- Brand type: Raleway (self-hosted, copied from the brand kit) ------- */
+@font-face {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/raleway-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/raleway-700.woff2") format("woff2");
+}
+
+/* ---- Token mapping onto Upptime theme variables ------------------------- */
+html:root {
+  /* brand tokens */
+  --wtp-navy-deep: #0b1437;
+  --wtp-navy-glow: #241a5e;
+  --wtp-navy: #1e1249;
+  --wtp-teal: #68c4cd;
+  --wtp-teal-soft: #8fd4db;
+  --wtp-indigo: #4f46e5;
+  --wtp-headline: #ffffff;
+  --wtp-muted: #cdd0e0;
+  --wtp-font: Raleway, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wtp-down: #ff5d7a;
+  --wtp-degraded: #f7b731;
+
+  /* upptime theme variables */
+  --body-background-color: var(--wtp-navy-deep);
+  --body-text-color: var(--wtp-muted);
+  --card-background-color: rgba(30, 18, 73, 0.55);
+  --card-border-color: rgba(104, 196, 205, 0.22);
+  --nav-background-color: rgba(11, 20, 55, 0.78);
+  --nav-border-bottom-color: rgba(104, 196, 205, 0.22);
+  --nav-current-border-bottom-color: var(--wtp-teal);
+  --up-border-left-color: var(--wtp-teal);
+  --down-border-left-color: var(--wtp-down);
+  --down-background-color: rgba(255, 93, 122, 0.14);
+  --degraded-border-left-color: var(--wtp-degraded);
+  --tag-color: var(--wtp-navy-deep);
+  --tag-up-background-color: var(--wtp-teal);
+  --tag-down-background-color: var(--wtp-down);
+  --tag-degraded-background-color: var(--wtp-degraded);
+  --change-background-color: rgba(104, 196, 205, 0.25);
+  --error-button-border-color: transparent;
+  --error-button-background-color: var(--wtp-indigo);
+  --error-button-color: #ffffff;
+  --submit-button-border-color: transparent;
+  --submit-button-background-color: var(--wtp-indigo);
+  --submit-button-color: #ffffff;
+  --graph-opacity: 0.95;
+  --graph-filter: none;
+}
+
+/* ---- Atmosphere: navy radial glow + faint blueprint grid ---------------- */
+html body {
+  font-family: var(--wtp-font);
+  color: var(--wtp-muted);
+  background-color: var(--wtp-navy-deep);
+  background-image:
+    linear-gradient(rgba(104, 196, 205, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(104, 196, 205, 0.05) 1px, transparent 1px),
+    radial-gradient(120% 90% at 50% -10%, var(--wtp-navy-glow) 0%, var(--wtp-navy-deep) 62%);
+  background-size: 44px 44px, 44px 44px, cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
+
+/* soft teal aurora behind the header — decorative only */
+html body::before {
+  content: "";
+  position: fixed;
+  inset: -20% -10% auto -10%;
+  height: 55vh;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(42% 55% at 30% 18%, rgba(104, 196, 205, 0.14), transparent 70%),
+    radial-gradient(38% 50% at 72% 8%, rgba(79, 70, 229, 0.20), transparent 70%);
+}
+#sapper { position: relative; z-index: 1; }
+
+::selection { background: rgba(104, 196, 205, 0.35); color: #ffffff; }
+
+/* ---- Typography ---------------------------------------------------------- */
+html body h1,
+html body h2,
+html body h3,
+html body h4,
+html body h5,
+html body h6 {
+  font-family: var(--wtp-font);
+  font-weight: 700;
+  color: var(--wtp-headline);
+}
+html body header h1 {
+  font-size: 2.4em;
+  letter-spacing: -0.02em;
+  margin-top: 1rem;
+  text-shadow: 0 0 32px rgba(104, 196, 205, 0.25);
+}
+html body header .lead {
+  color: var(--wtp-muted);
+  font-size: 1.05em;
+  max-width: 46em;
+}
+html body h3 { opacity: 0.9; color: var(--wtp-teal-soft); font-size: 1.05em; }
+
+html body main a { color: var(--wtp-teal); text-decoration: none; }
+html body main a:hover { color: var(--wtp-teal-soft); text-decoration: underline; }
+
+/* ---- Navigation ----------------------------------------------------------- */
+html body nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 32px rgba(4, 8, 26, 0.45);
+  font-weight: 400;
+}
+html body nav .logo {
+  color: var(--wtp-headline) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em;
+}
+html body nav .logo img {
+  border-radius: 10px !important;
+  filter: drop-shadow(0 0 10px rgba(104, 196, 205, 0.35));
+}
+html body nav ul a {
+  color: var(--wtp-muted);
+  transition: color 0.2s ease;
+}
+html body nav ul a:hover { color: var(--wtp-teal); }
+
+/* ---- Cards: glassmorphic, neon-edged ------------------------------------- */
+html body article {
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 0 1px rgba(104, 196, 205, 0.06),
+    0 12px 32px rgba(4, 8, 26, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+html body article + article { margin-top: 0.75rem; }
+html body article:hover {
+  transform: translateY(-1px);
+  border-color: rgba(104, 196, 205, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(104, 196, 205, 0.12),
+    0 0 24px rgba(104, 196, 205, 0.12),
+    0 16px 40px rgba(4, 8, 26, 0.55);
+}
+html body article.up { border-left: 3px solid var(--wtp-teal) !important; }
+html body article.degraded { border-left: 3px solid var(--wtp-degraded) !important; }
+html body article.down { border-left: 3px solid var(--wtp-down) !important; }
+html body article h4 { margin-bottom: 0.25em; }
+
+/* live-status sparkline cards keep their teal PNG; multiply it into the glass
+   so it reads as a subtle dark-teal wave instead of an opaque pale block */
+html body article.graph {
+  background-blend-mode: multiply;
+}
+
+/* response-time value chip — solid surface + white text so it stays WCAG AA
+   legible over the sparkline (worst case ~15:1) */
+html body .data {
+  background: rgba(11, 20, 55, 0.92);
+  color: #ffffff;
+  font-weight: 700;
+  border: 1px solid rgba(104, 196, 205, 0.3);
+  border-radius: 6px;
+  padding: 0.15rem 0.5rem !important;
+}
+
+/* ---- Status tags ----------------------------------------------------------- */
+html body .tag {
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.33rem 0.66rem;
+}
+html body .tag.up,
+html body .tag.closed { box-shadow: 0 0 14px rgba(104, 196, 205, 0.45); }
+/* navy-on-red keeps ~6:1 contrast; white-on-red fails AA at tag size */
+html body .tag.down,
+html body .tag.open { box-shadow: 0 0 14px rgba(255, 93, 122, 0.45); color: var(--wtp-navy-deep); }
+html body .tag.degraded { box-shadow: 0 0 14px rgba(247, 183, 49, 0.4); }
+
+/* ---- Time-range selector: teal pills --------------------------------------- */
+html body form.r label {
+  border: 1px solid rgba(104, 196, 205, 0.35);
+  border-radius: 999px;
+  padding: 0.25rem 0.85rem;
+  cursor: pointer;
+  color: var(--wtp-muted);
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  margin-left: 0.5rem !important;
+}
+html body form.r label:hover {
+  border-color: var(--wtp-teal);
+  color: var(--wtp-headline);
+}
+html body form.r input:checked + label {
+  background: var(--wtp-teal);
+  border-color: var(--wtp-teal);
+  color: var(--wtp-navy-deep);
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(104, 196, 205, 0.5);
+}
+
+/* ---- Buttons: teal→indigo gradient (brand arrow treatment) ----------------- */
+html body a.error-button,
+html body .submit-button {
+  background: linear-gradient(135deg, var(--wtp-teal) 0%, var(--wtp-indigo) 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px;
+  font-family: var(--wtp-font);
+  font-weight: 700;
+  box-shadow: 0 4px 18px rgba(79, 70, 229, 0.4);
+}
+
+/* ---- Incident detail lists -------------------------------------------------- */
+html body dl dt { color: var(--wtp-headline); }
+
+/* ---- Footer ------------------------------------------------------------------ */
+html body footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(104, 196, 205, 0.15);
+  color: rgba(205, 208, 224, 0.6);
+  font-size: 0.85em;
+}
+html body footer a { color: var(--wtp-teal-soft); text-decoration: none; }
+html body footer a:hover { color: var(--wtp-teal); }
+
+/* ---- Loading spinners ---------------------------------------------------------- */
+html body .loading svg { stroke: var(--wtp-teal); }
+
+/* ---- Focus + scrollbar polish ---------------------------------------------------- */
+html body :focus-visible {
+  outline: 2px solid var(--wtp-teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+html::-webkit-scrollbar { width: 12px; }
+html::-webkit-scrollbar-track { background: var(--wtp-navy-deep); }
+html::-webkit-scrollbar-thumb {
+  background: rgba(104, 196, 205, 0.3);
+  border-radius: 6px;
+  border: 3px solid var(--wtp-navy-deep);
+}
+html::-webkit-scrollbar-thumb:hover { background: rgba(104, 196, 205, 0.5); }
+
+@media (prefers-reduced-motion: reduce) {
+  html body article,
+  html body form.r label { transition: none; }
+  html body article:hover { transform: none; }
+}
