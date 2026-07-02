@@ -179,38 +179,116 @@ html body article.degraded { border-left: 3px solid var(--wtp-degraded) !importa
 html body article.down { border-left: 3px solid var(--wtp-down) !important; }
 html body article h4 { margin-bottom: 0.25em; }
 
-/* live-status sparkline cards keep their teal PNG; multiply it into the glass
-   so it reads as a subtle dark-teal wave instead of an opaque pale block */
-html body article.graph {
-  background-blend-mode: multiply;
-}
-
-/* align the stat rows: fixed label column so the uptime and response-time
-   value chips sit on the same vertical line (rows are separate divs, so only
-   a fixed column width can align them) */
-html body section.live-status article.graph > div {
+/* ---- Live Status: playing-card adaptive grid ------------------------------
+   Compact portrait cards, ~6 abreast at 1440px, reflowing 4/3/2/1 with the
+   screen (Rob, 2026-07-02). Works over Upptime's stock markup:
+   article.graph > h4 (icon + name link) + two divs of "label: <span.data>". */
+html body section.live-status {
   display: grid;
-  grid-template-columns: 13em auto;
-  align-items: center;
-  justify-items: start;
-  margin: 0.2rem 0;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1rem;
 }
-@media (max-width: 480px) {
-  html body section.live-status article.graph > div { display: block; }
+html body section.live-status article.graph {
+  aspect-ratio: 4 / 4.6;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;              /* grid gap replaces article+article */
+  padding: 1rem 0.9rem 0;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  /* sparkline PNG becomes the card's bottom sweep */
+  background-size: 100% 42% !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  background-blend-mode: multiply;
+  /* status accent moves to the top edge on cards */
+  border-left: 1px solid rgba(104, 196, 205, 0.22) !important;
+  border-top: 3px solid var(--wtp-teal) !important;
+}
+html body section.live-status article.graph.degraded { border-top-color: var(--wtp-degraded) !important; }
+html body section.live-status article.graph.down { border-top-color: var(--wtp-down) !important; }
+html body section.live-status article.graph:hover { transform: translateY(-3px); }
+
+/* status badge derived from the card's state class */
+html body section.live-status article.graph::after {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  border-radius: 999px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.22rem 0.5rem;
+  color: var(--wtp-navy-deep);
+}
+html body section.live-status article.graph.up::after {
+  content: "UP";
+  background: var(--wtp-teal);
+  box-shadow: 0 0 12px rgba(104, 196, 205, 0.45);
+}
+html body section.live-status article.graph.degraded::after {
+  content: "DEGRADED";
+  background: var(--wtp-degraded);
+  box-shadow: 0 0 12px rgba(247, 183, 49, 0.4);
+}
+html body section.live-status article.graph.down::after {
+  content: "DOWN";
+  background: var(--wtp-down);
+  box-shadow: 0 0 12px rgba(255, 93, 122, 0.45);
 }
 
-/* one "response time" column header above the first card (right-aligned over
-   the sparkline column) instead of a repeated per-card label */
-html body section.live-status::before {
-  content: "response time";
+/* card title: two-line slot, room for the badge; favicon icons off */
+html body section.live-status article.graph h4 {
+  font-size: 0.88rem;
+  line-height: 1.25;
+  min-height: 2.3em;
+  margin: 0;
+  padding-right: 3.2rem;
+  color: var(--wtp-teal-soft);
+}
+html body section.live-status article.graph h4 .icon { display: none; }
+html body section.live-status article.graph h4 a { color: inherit; }
+
+/* stat rows: hide the "Overall uptime:" / "Average response time:" prose via
+   font-size:0, restyle the values, add small captions */
+html body section.live-status article.graph > div {
   display: block;
-  text-align: right;
-  padding: 0 0.75rem 0.3rem 0;
-  font-size: 0.62rem;
+  font-size: 0;
+  margin: 0.45rem 0 0;
+}
+html body section.live-status article.graph > div .data {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: transparent;
+  border: none;
+  padding: 0 !important;
+  border-radius: 0;
+}
+html body section.live-status article.graph > div::after {
+  content: "uptime";
+  display: block;
+  font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(143, 212, 219, 0.75);
+  color: rgba(143, 212, 219, 0.7);
+  margin-top: 0.15rem;
+}
+html body section.live-status article.graph > div:nth-of-type(2) .data {
+  font-size: 0.95rem;
+  color: var(--wtp-teal-soft);
+}
+html body section.live-status article.graph > div:nth-of-type(2)::after {
+  content: "avg response";
+  color: rgba(143, 212, 219, 0.55);
+}
+
+/* incident-history graph cards (subpages) keep the soft blend */
+html body article.graph {
+  background-blend-mode: multiply;
 }
 
 /* response-time value chip — solid surface + white text so it stays WCAG AA
