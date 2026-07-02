@@ -183,6 +183,10 @@ html body article h4 { margin-bottom: 0.25em; }
    Compact portrait cards, ~6 abreast at 1440px, reflowing 4/3/2/1 with the
    screen (Rob, 2026-07-02). Works over Upptime's stock markup:
    article.graph > h4 (icon + name link) + two divs of "label: <span.data>". */
+/* stock Upptime caps main at 800px — widen so the deck can breathe */
+html body main.container {
+  max-width: 1280px;
+}
 html body section.live-status {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
