@@ -14,6 +14,32 @@ sites:
     url: https://sgd.wealthtechpros.com
   - name: WTP MCP
     url: https://mcp.wealthtechpros.com
+  # ---- Added 2026-07-02 (org sweep, all curl-verified live first) ----
+  - name: WTP Marketing Site
+    url: https://wealthtechpros.com
+  - name: Project Management
+    url: https://projectmanagement.wealthtechpros.com
+  - name: WTP Assistant
+    url: https://assistant.wealthtechpros.com
+  - name: Trust Fabric
+    url: https://trust.wealthtechpros.com
+  - name: Client Document Portal
+    url: https://portals.wealthtechpros.com
+  # Adviser MCP sits behind a Cloudflare Access gate: curl gets 403, a browser
+  # gets 302 to the CF login. Without expectedStatusCodes Upptime would read
+  # it as permanently down. Swap to an unauthenticated /health path if one
+  # is ever exposed.
+  - name: Adviser MCP
+    url: https://adviser-mcp.wealthtechpros.com
+    expectedStatusCodes:
+      - 200
+      - 302
+      - 403
+  # demo.clientonboarding.wealthtechpros.com deliberately NOT monitored —
+  # live but a demo env that may be parked between sessions; monitoring it
+  # would open false-alarm incidents (decision 2026-07-02, Rob to revisit).
+  # www / benchmark.wealthtechpros.com / staging.sgd. skipped — same origins
+  # as already-monitored services (no extra signal).
   # Platform Automation Proxy — OFF. proxy.wealthtechpros.com does not resolve
   # yet (NXDOMAIN — the proxy is not deployed at that hostname).
   # The monitor was removed in #4; its auto-opened downtime incident (#1) was a
