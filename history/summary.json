@@ -40,20 +40,20 @@
     "url": "https://benchmark.clientonboarding.wealthtechpros.com",
     "icon": "https://icons.duckduckgo.com/ip3/benchmark.clientonboarding.wealthtechpros.com.ico",
     "slug": "client-onboarding-benchmark",
-    "status": "down",
-    "uptime": "97.66%",
-    "uptimeDay": "73.82%",
-    "uptimeWeek": "96.26%",
-    "uptimeMonth": "97.66%",
-    "uptimeYear": "97.66%",
-    "time": 462,
-    "timeDay": 430,
-    "timeWeek": 476,
-    "timeMonth": 462,
-    "timeYear": 462,
+    "status": "up",
+    "uptime": "95.72%",
+    "uptimeDay": "51.12%",
+    "uptimeWeek": "93.02%",
+    "uptimeMonth": "95.72%",
+    "uptimeYear": "95.72%",
+    "time": 458,
+    "timeDay": 424,
+    "timeWeek": 470,
+    "timeMonth": 458,
+    "timeYear": 458,
     "dailyMinutesDown": {
       "2026-07-01": 350,
-      "2026-07-02": 27
+      "2026-07-02": 354
     }
   },
   {
