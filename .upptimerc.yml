@@ -75,6 +75,11 @@ status-website:
     <link rel="preload" href="https://status.wealthtechpros.com/raleway-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="https://status.wealthtechpros.com/raleway-700.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="https://status.wealthtechpros.com/wtp-status.css">
+  # wtp-group.js groups live-status cards by product ("<Product> — <Variant>"
+  # site names share a heading). Fully-qualified URL for the same Sapper-crawl
+  # reason as the head assets above.
+  customBodyHtml: >-
+    <script src="https://status.wealthtechpros.com/wtp-group.js" defer></script>
   cname: status.wealthtechpros.com
   logoUrl: https://status.wealthtechpros.com/logo.png
   favicon: https://status.wealthtechpros.com/favicon.svg
