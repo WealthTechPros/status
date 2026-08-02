@@ -23,6 +23,25 @@ sites:
     url: https://assistant.wealthtechpros.com
   - name: Trust Fabric
     url: https://trust.wealthtechpros.com
+  # The root-domain monitor above only proves the app is up, not that its
+  # authenticated staff area works — it missed a real /internal 500 outage
+  # entirely (2026-08-02) because Upptime only checks the exact URL given,
+  # never sub-routes. /internal has no auth gate at the point of failure
+  # (confirmed: an unauthenticated curl gets a raw 500, not a redirect), so
+  # monitoring it directly is meaningful today. The existing /api/health and
+  # /healthz endpoints were considered instead but rejected — they're pure
+  # build-identity liveness checks (no DB/route logic) and were reporting
+  # "ok" throughout this same outage, so they would not have caught it.
+  # If auth is ever added in front of /internal, a clean unauthenticated hit
+  # would likely start 30x-redirecting to login — widen expectedStatusCodes
+  # then (see the Adviser MCP entry below for the pattern), don't just delete
+  # this monitor.
+  - name: Trust Fabric — Internal
+    url: https://trust.wealthtechpros.com/internal
+    expectedStatusCodes:
+      - 200
+      - 302
+      - 307
   - name: Client Document Portal
     url: https://portals.wealthtechpros.com
   # Adviser MCP sits behind a Cloudflare Access gate: curl gets 403, a browser
