@@ -1,8 +1,8 @@
-name: SGD Auto-Approve & Merge
+name: SGE Auto-Approve & Merge
 
 # Standing automation for WealthTech Pros' Model-B autonomous review loop.
 #
-# When a PR carries the `pr-reviewed` label (the recorded SGD review verdict),
+# When a PR carries the `pr-reviewed` label (the recorded SGE review verdict),
 # has no human-hold label, touches no sensitive path, and all its checks pass,
 # the wtp-automation GitHub App approves it — satisfying branch protection's
 # required review, which a self-authored PR cannot do — and squash-merges it.
@@ -47,7 +47,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: sgd-auto-merge-${{ github.event.pull_request.number }}
+  group: sge-auto-merge-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:
@@ -108,7 +108,7 @@ jobs:
           #        window for checks to appear, and only treat a persistently-empty set as
           #        "no CI". We also exclude THIS workflow's own checks (by the `workflow`
           #        field AND the job name) so we never wait on ourselves. ---
-          SELF_WF="SGD Auto-Approve & Merge"
+          SELF_WF="SGE Auto-Approve & Merge"
           # Grace for checks to REGISTER (not finish). 180s >> GitHub Actions' typical
           # 10-30s registration; raise this knob if the repo adopts slow external checks.
           grace_deadline=$(( SECONDS + 180 ))
@@ -170,7 +170,7 @@ jobs:
             2>/dev/null || echo 0)"
           if [ "$approved" = "0" ] && [ "$author" != "$BOT" ]; then
             gh pr review "$PR" --repo "$REPO" --approve --body \
-              "Auto-approved by wtp-automation[bot] — SGD gate: \`pr-reviewed\` set, no hold, no sensitive path, all checks green. Bound to ${EVENT_SHA:0:12}. (Model B: clean, non-sensitive.)"
+              "Auto-approved by wtp-automation[bot] — SGE gate: \`pr-reviewed\` set, no hold, no sensitive path, all checks green. Bound to ${EVENT_SHA:0:12}. (Model B: clean, non-sensitive.)"
             echo "approved at $EVENT_SHA"
           else
             echo "approval already present at bound commit (or bot is author) — skipping approve step"
