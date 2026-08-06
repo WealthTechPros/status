@@ -46,6 +46,17 @@ sites:
       - 200
       - 302
       - 307
+  # Complements "Trust Fabric — Internal" above rather than duplicating it — that entry proves
+  # the /internal PAGE doesn't 5xx (a page-level signal). This one polls a dedicated deep
+  # health-check endpoint (WealthTechPros/trust-fabric#283) that server-side exercises the SAME
+  # NextAuth JWT encode/decode round-trip getToken() performs against the real NEXTAUTH_SECRET,
+  # plus a live DB round-trip through the app's evidence store — built specifically because
+  # /api/health and /healthz (pure build-identity liveness checks, no auth/DB) kept reporting
+  # "ok" throughout the SAME /internal outage referenced above. Returns a plain 200 (both checks
+  # pass) or 503 (naming which check failed in its JSON body — never a secret value or DB
+  # content), so no expectedStatusCodes override is needed: a 503 IS the down signal.
+  - name: Trust Fabric — Deep Health
+    url: https://trust.wealthtechpros.com/api/health/deep
   - name: Client Document Portal
     url: https://portals.wealthtechpros.com
   # Adviser MCP sits behind a Cloudflare Access gate: curl gets 403, a browser
