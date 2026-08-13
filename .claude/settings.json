@@ -9,6 +9,6 @@
     }
   },
   "enabledPlugins": {
-    "sgd@wtp-plugins": true
+    "sge@wtp-plugins": true
   }
 }
