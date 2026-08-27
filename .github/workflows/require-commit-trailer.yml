@@ -1,0 +1,188 @@
+name: Require commit trailer
+
+# Activates the "Phase 2: blocking" enforcement already documented (but never
+# built) in skills/sge-init/templates/change-protocol.md and
+# skills/sge-init/templates/commit-msg — every commit on a PR must carry a
+# Spec: SPEC-NNN/SGE-NNN (legacy SGD-NNN also accepted) trailer or an
+# SGE-Override: <STEP>; <reason> (legacy SGD-Override: also accepted) trailer,
+# matching that template's own regex rather than defining a new format.
+#
+# This is narrower than — and does not reopen — the coherence-gate question
+# docs/decisions/0002-regulatory-traceability-layer.md rejected a hard gate for.
+# That ADR was about hard-gating C12 regulatory-traceability coherence; this
+# gate only checks a commit message carries the trailer format, which is
+# structural, not a content/coherence judgment.
+#
+# Modelled directly on require-pr-reviewed-label.yml's pattern: a lightweight
+# job, an explicit failure message, dependabot/draft bypass.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: require-commit-trailer-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  check-trailer:
+    name: Require commit trailer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify every commit on this PR carries the trailer
+        env:
+          # PR author login from the event payload / API — DURABLE provenance,
+          # unlike github.actor (the triggering-event actor, which becomes the
+          # maintainer when someone runs `gh pr update-branch`). See #1536.
+          PR_AUTHOR_LOGIN: ${{ github.event.pull_request.user.login }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          IS_DRAFT: ${{ github.event.pull_request.draft }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          # For `gh api` (verified per-commit author lookup). The default token
+          # has the pull-requests:read this workflow already declares.
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if [ "$IS_DRAFT" = "true" ]; then
+            echo "✓ Draft PR — trailer gate deferred until ready_for_review"
+            exit 0
+          fi
+
+          # Matches skills/sge-init/templates/commit-msg's two grep patterns
+          # ('^Spec:\s*(SPEC|SGD|SGE)-[0-9]+' and '^(SGD|SGE)-Override:\s*[A-Z]+;\s*.{10,}'),
+          # merged into one alternation and transliterated to POSIX character
+          # classes for portability. Keep this byte-for-byte equivalent to the
+          # template if either changes — verified equivalent as of this commit.
+          # SGD accepted alongside SGE (rebrand/sgd-to-sge-full): historical
+          # spec IDs and override trailers minted before the rename must keep
+          # validating; new work should use SGE-NNN / SGE-Override going forward.
+          TRAILER_RE='^Spec:[[:space:]]*(SPEC|SGD|SGE)-[0-9]+|^(SGD|SGE)-Override:[[:space:]]*[A-Z]+;[[:space:]]*.{10,}'
+
+          # Skip merge commits, fixups/squashes — mirrors the commit-msg hook's
+          # own skip list so the two stay consistent.
+          is_skip() {
+            case "$1" in
+              "Merge "*|"fixup! "*|"squash! "*|"Revert "*) return 0 ;;
+              *) return 1 ;;
+            esac
+          }
+
+          # Dependabot bypass, keyed on DURABLE PR provenance (issue #1536):
+          # bypass the WHOLE gate only when the PR author is dependabot AND
+          # every non-skip commit is authored by dependabot. The decision
+          # lives in a tested script (commit-trailer-bypass.sh) and fails
+          # closed.
+          #
+          # Per-commit author comes from GitHub's `.author.login` on
+          # GET /pulls/{n}/commits — the SAME source as the PR-author gate —
+          # NOT git %an/%ae, which are attacker-settable free text
+          # (`git commit --author="dependabot[bot] <x>"`). Without this, a
+          # maintainer with push access could smuggle a trailer-less commit onto
+          # a genuine dependabot PR and bypass the whole gate. A commit GitHub
+          # cannot link to an account has `.author == null`; jq emits the sentinel
+          # "(none)" (not a valid GitHub login, never == dependabot[bot]), so the
+          # bypass fails closed on it. The subject for is_skip also comes from the
+          # API payload. Using a non-empty sentinel (not "") is deliberate: the
+          # bypass script drops blank lines as the stdin trailing-newline artifact,
+          # so an unlinked commit MUST carry a concrete non-dependabot token.
+          #
+          # IMPORTANT — `.author.login` alone is NOT cryptographically verified:
+          # GitHub resolves it via a global, non-cryptographic match of the git
+          # commit's author EMAIL against its account database, independent of
+          # any signature. dependabot[bot]'s id (49699333) and noreply-email
+          # format are public, so `.author.login` by itself can be forged by any
+          # PR author pushing `git commit --author="dependabot[bot]
+          # <49699333+dependabot[bot]@users.noreply.github.com>"` to their OWN
+          # branch — this is a well-known, still-open GitHub commit-spoofing
+          # class (see e.g. github.com/0xdead8ead/gitfraud), NOT something this
+          # workflow can rely on alone once the per-commit exemption below
+          # removes the PR-author-level precondition the whole-PR bypass has.
+          # `.commit.verification.verified` is the orthogonal, unforgeable
+          # signal: real dependabot commits are GitHub-signed by GitHub's own
+          # infrastructure (`reason: valid`), and no non-dependabot actor can
+          # produce a commit that is BOTH attributed to dependabot[bot] AND
+          # carries a valid signature GitHub attributes to dependabot's account
+          # — doing so would require dependabot's own signing key, not just
+          # knowledge of its public email. The per-commit exemption below
+          # therefore requires login match AND verified == true together;
+          # neither one alone is trusted for this narrower, PR-author-ungated
+          # per-commit check (unlike the whole-PR bypass above, which stays
+          # additionally gated on PR_AUTHOR_LOGIN and is unaffected by this).
+          #
+          # gh api paginates; each element is
+          # `<sha>\t<login-or-(none)>\t<verified-bool>\t<subject>`. sha_login /
+          # sha_verified also feed the PER-COMMIT dependabot exemption below.
+          declare -A sha_login=()
+          declare -A sha_verified=()
+          author_logins=""
+          while IFS=$'\t' read -r sha login verified subject; do
+            if [ -n "$sha" ]; then
+              sha_login["$sha"]="$login"
+              sha_verified["$sha"]="$verified"
+            fi
+            is_skip "$subject" && continue
+            author_logins="${author_logins}${login}"$'\n'
+          done < <(gh api --paginate "repos/${GH_REPO}/pulls/${PR_NUMBER}/commits" \
+                     --jq '.[] | [.sha, (.author.login // "(none)"), (.commit.verification.verified | tostring), (.commit.message | split("\n")[0])] | @tsv')
+          if printf '%s' "$author_logins" | bash "$GITHUB_WORKSPACE/.github/scripts/commit-trailer-bypass.sh"; then
+            echo "✓ Dependabot PR (verified per-commit author) — trailer gate bypassed"
+            exit 0
+          fi
+
+          # PR-level bypass declined above (e.g. a supplementary human/agent
+          # commit sits alongside dependabot's own commit — a genuine case:
+          # dependabot's bump broke a vendored-bundle/lockfile check dependabot
+          # itself can't regenerate, so a maintainer commit fixes it). That
+          # supplementary commit MUST still carry its own trailer (or be
+          # dependabot-authored) — nothing here weakens that. What changes is
+          # narrower: per commit, if its author.login is dependabot[bot] AND
+          # GitHub's own signature verification passed (see the IMPORTANT note
+          # above — login alone is forgeable via git author metadata; requiring
+          # both closes that gap), the trailer requirement is waived for THAT
+          # commit specifically, since dependabot never emits the trailer.
+          # Every other commit — dependabot-PR or not, including one merely
+          # claiming dependabot's identity via spoofable git %an/%ae — is still
+          # required to carry a real trailer. This closes the gap where ANY
+          # supplementary commit on a dependabot PR made the PR permanently
+          # ungatable (dependabot's own commit can never be amended to add a
+          # trailer without rewriting bot-authored history), without weakening
+          # the fail-closed guarantee: forging BOTH the login AND a verified
+          # signature GitHub attributes to dependabot's account is not possible
+          # without dependabot's own signing key.
+          FAILED=0
+          for sha in $(git rev-list "${BASE_SHA}..${HEAD_SHA}"); do
+            subject=$(git log -1 --format=%s "$sha")
+            if is_skip "$subject"; then
+              continue
+            fi
+            login="${sha_login[$sha]:-}"
+            verified="${sha_verified[$sha]:-false}"
+            if [ "$login" = "dependabot[bot]" ] && [ "$verified" = "true" ]; then
+              echo "✓ $sha — $subject (dependabot-authored, GitHub-verified — trailer waived)"
+              continue
+            fi
+            body=$(git log -1 --format=%B "$sha")
+            if echo "$body" | grep -qE "$TRAILER_RE"; then
+              echo "✓ $sha — $subject"
+            else
+              echo "::error::$sha ($subject) has no Spec: / SGE-Override: trailer (legacy SGD-Override: also accepted)"
+              FAILED=1
+            fi
+          done
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "::error::One or more commits on this PR lack the required trailer. See README.md's 'Enable the commit-msg trailer hook' section or skills/sge-init/templates/change-protocol.md — commit via /sge:commit, which emits the correct trailer automatically."
+            exit 1
+          fi
+          echo "✓ Every commit on this PR carries a valid trailer"

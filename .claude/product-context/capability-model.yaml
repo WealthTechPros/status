@@ -1,0 +1,90 @@
+version: "1.0.0"
+vision: ../../docs/vision.md
+
+# Small deliberately. This repo is a config-driven Upptime deployment with no
+# application code — three capabilities is the honest shape, not a
+# heavyweight product model forced onto an ops repo. See docs/vision.md
+# Non-goals for what this deliberately does NOT cover.
+
+capabilities:
+  - id: CAP-01
+    name: Uptime Monitoring Configuration
+    description: >
+      The set of monitored endpoints (`.upptimerc.yml` `sites:`), their check
+      cadence, and the documented decisions behind each monitor's shape
+      (expected status codes for auth-gated endpoints, deliberately-deferred
+      hosts, deep-health vs. page-level checks).
+    features:
+      - id: CAP-01-01
+        name: Monitor list accuracy
+        status: implemented
+        note: >
+          12 active monitors as of 2026-08-27, each added only after
+          curl-verifying the endpoint is live (see .upptimerc.yml history
+          comments, e.g. "2026-07-02 org sweep, all curl-verified live
+          first").
+      - id: CAP-01-02
+        name: Non-standard-response handling
+        status: implemented
+        note: >
+          expectedStatusCodes overrides for endpoints that are up but don't
+          return a bare 200 (Adviser MCP behind Cloudflare Access, Trust
+          Fabric — Internal pending an auth gate).
+      - id: CAP-01-03
+        name: Deferred/excluded monitor documentation
+        status: implemented
+        note: >
+          Commented-out monitor stanzas for hosts that are real but
+          intentionally not yet monitored (SFTP cost gate, demo env,
+          never-deployed proxy) — documented in place so the absence reads
+          as a decision, not an oversight.
+
+  - id: CAP-02
+    name: Incident Reporting Conventions
+    description: >
+      How a real outage becomes a visible, triageable record — auto-opened/
+      auto-closed GitHub Issues via Upptime's own mechanism, plus the
+      judgment calls layered on top (closing a false-alarm incident Upptime
+      can't auto-close once its monitor is removed, distinguishing a real
+      outage from an auth/gateway quirk).
+    features:
+      - id: CAP-02-01
+        name: Auto-opened/auto-closed incident issues
+        status: implemented
+        note: Stock Upptime uptime.yml behaviour — unmodified.
+      - id: CAP-02-02
+        name: False-alarm closure and removed-monitor cleanup
+        status: implemented
+        note: >
+          wtp-org#53 precedent — an incident opened by a monitor for a
+          never-deployed host was closed manually with the reasoning
+          recorded, since Upptime cannot auto-close an incident once its
+          monitor stanza is deleted.
+
+  - id: CAP-03
+    name: Brand-Skin Maintenance
+    description: >
+      Applying and preserving the WTP navy/Raleway brand skin
+      (`assets/wtp-status.css`, Raleway woff2s, logo, favicon,
+      `status-website:` block in `.upptimerc.yml`) against Upptime's weekly
+      template auto-sync, which overwrites `.github/**/*` files matching its
+      own template set.
+    features:
+      - id: CAP-03-01
+        name: Brand asset set (CSS, fonts, logo, favicon)
+        status: implemented
+      - id: CAP-03-02
+        name: Template-sync-safe workflow placement
+        status: implemented
+        note: >
+          Repo-specific workflows (wtp-graphs.yml) kept outside the stock
+          Upptime template filename set so update-template.yml's weekly sync
+          doesn't delete them — see ADR-0001.
+      - id: CAP-03-03
+        name: Fully-qualified asset URLs in customHeadHtml
+        status: implemented
+        note: >
+          Root-relative asset hrefs break the Sapper export crawler (treated
+          as routes, 404 pages written, later asset copy fails with EISDIR)
+          — documented fix from PR #10 review, encoded as a constraint here
+          so it isn't rediscovered the hard way again.
