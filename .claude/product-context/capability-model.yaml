@@ -19,7 +19,7 @@ capabilities:
         name: Monitor list accuracy
         status: implemented
         note: >
-          12 active monitors as of 2026-08-27, each added only after
+          14 active monitors as of 2026-08-27, each added only after
           curl-verifying the endpoint is live (see .upptimerc.yml history
           comments, e.g. "2026-07-02 org sweep, all curl-verified live
           first").
@@ -35,9 +35,9 @@ capabilities:
         status: implemented
         note: >
           Commented-out monitor stanzas for hosts that are real but
-          intentionally not yet monitored (SFTP cost gate, demo env,
-          never-deployed proxy) — documented in place so the absence reads
-          as a decision, not an oversight.
+          intentionally not yet monitored (SFTP cost gate, never-deployed
+          proxy) — documented in place so the absence reads as a decision,
+          not an oversight.
 
   - id: CAP-02
     name: Incident Reporting Conventions

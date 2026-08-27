@@ -88,7 +88,7 @@ Feature: Monitor configuration correctness
   `www / benchmark.wealthtechpros.com / staging.sgd.` in current config).
 - **DNS exists but service doesn't serve yet.** A CNAME can resolve while the app behind
   it 404s or resets the TLS handshake — verify by curl/openssl, not by DNS resolution
-  alone, before flipping a monitor URL (see the `sgd.` → `sge.` deferral, wtp-org#28).
+  alone, before flipping a monitor URL (see the `sgd.` → `sge.` deferral, status#28).
 - **Page-level check misses a sub-route failure.** A root-domain monitor proves the app
   boots, not that every authenticated area works (Trust Fabric `/internal` 500,
   2026-08-02) — a dedicated monitor for a known-critical sub-route is warranted when a
