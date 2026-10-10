@@ -35,8 +35,10 @@ with two deliberate deviations from a stock Upptime install:
    stock `graphs.yml`, because `npx @upptime/graphs` depends on
    `canvas@2.x`, which has no prebuilt binaries for Node 22+ — the stock
    workflow silently produces nothing on current GitHub Actions runners.
-   `wtp-graphs.yml` pins Node 20 (the last ABI with `canvas@2` prebuilts)
-   before running the generator. It is kept under a filename **outside**
+   `wtp-graphs.yml` runs on Node 24 and installs the cairo/pango build
+   dependencies first, so `canvas@2` compiles from source before the
+   generator runs. (It originally pinned Node 20, the last ABI with
+   `canvas@2` prebuilts; moved to Node 24 when Node 20 reached end of life.) It is kept under a filename **outside**
    Upptime's own template file set specifically so `update-template.yml`'s
    weekly sync never deletes it — the stock `graphs.yml` is left in place
    as a harmless no-op rather than removed, so a future upstream fix to
