@@ -40,7 +40,7 @@ updates, without a recurring manual fix-up task.
 - `assets/**` changes trigger `site.yml`'s `Static Site CI` (push-path trigger already
   wired in the stock template — no repo-specific change needed there).
 - Any workflow that must *not* be overwritten by `update-template.yml` (e.g.
-  `wtp-graphs.yml`, the Node-20 pin for the canvas dependency) must use a filename outside
+  `wtp-graphs.yml`, the canvas source-build workaround) must use a filename outside
   the stock Upptime template's own filename set (see ADR-0001) — this is the mechanism
   that makes the brand-skin's supporting infra sync-safe.
 

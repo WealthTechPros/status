@@ -1,12 +1,15 @@
 # WTP-owned replacement for the stock Graphs CI, which has silently produced
 # nothing since repo setup: `npx @upptime/graphs` depends (via
 # chartjs-node-canvas@3) on canvas@2.x, which has no prebuilt binaries for
-# Node 22+ — on current runners the source build fails and the CLI dies
+# Node 22+ — on current runners the prebuilt download 404s, the fallback
+# source build fails for want of the cairo/pango headers, and the CLI dies
 # without output, so graphs/<slug>/ and api/<slug>/ were never generated
 # (only template leftovers from the initial commit exist).
 #
-# Fix: pin Node 20 (last ABI with canvas@2 prebuilts) before running the
-# generator. This file is intentionally NOT part of the Upptime template set
+# Fix: run on Node 24 (current LTS; Node 20 is EOL) and install the native
+# build dependencies first, so canvas@2 compiles from source against the
+# Node 24 ABI. (Previously this pinned Node 20, the last ABI with canvas@2
+# prebuilts.) This file is intentionally NOT part of the Upptime template set
 # (.templaterc.json syncs .github/**/* by overwriting matching template
 # files; extra files like this one survive). The stock graphs.yml is left in
 # place — it remains a harmless no-op.
@@ -24,7 +27,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   graphs:
-    name: Generate graphs (Node 20)
+    name: Generate graphs (Node 24)
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -34,10 +37,14 @@ jobs:
         with:
           ref: ${{ github.head_ref || github.ref_name }}
           token: ${{ secrets.GH_PAT || github.token }}
-      - name: Use Node 20 (canvas@2 prebuilt ABI)
-        uses: actions/setup-node@v4
+      - name: Use Node 24
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: "24"
+      - name: Install canvas@2 native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends             build-essential libcairo2-dev libpango1.0-dev libjpeg-dev             libgif-dev librsvg2-dev
       - name: Generate graphs
         run: npx -y @upptime/graphs
         env:
