@@ -10,12 +10,6 @@ sites:
     url: https://benchmark.clientonboarding.wealthtechpros.com
   - name: Client Onboarding — Staging
     url: https://staging.clientonboarding.wealthtechpros.com
-  # Product renamed SGD -> SGE (Specification-Governed Engineering) 2026-08-04.
-  # URL deliberately NOT switched to sge.wealthtechpros.com yet — DNS exists but
-  # it doesn't resolve/serve (curl-verified 2026-08-04); flipping it now would
-  # false-alarm an outage. Swap once sge.wealthtechpros.com is confirmed live.
-  - name: SGE
-    url: https://sgd.wealthtechpros.com
   - name: WTP MCP
     url: https://mcp.wealthtechpros.com
   # ---- Added 2026-07-02 (org sweep, all curl-verified live first) ----
