@@ -4,10 +4,10 @@
     "url": "https://clientonboarding.wealthtechpros.com",
     "icon": "https://icons.duckduckgo.com/ip3/clientonboarding.wealthtechpros.com.ico",
     "slug": "client-onboarding-prod",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
+    "uptimeDay": "99.94%",
+    "uptimeWeek": "99.99%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 497,
@@ -15,17 +15,19 @@
     "timeWeek": 0,
     "timeMonth": 0,
     "timeYear": 497,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-11-20": 1
+    }
   },
   {
     "name": "Client Onboarding — Login",
     "url": "https://login.clientonboarding.wealthtechpros.com",
     "icon": "https://icons.duckduckgo.com/ip3/login.clientonboarding.wealthtechpros.com.ico",
     "slug": "client-onboarding-login",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
+    "uptimeDay": "99.96%",
+    "uptimeWeek": "99.99%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 842,
@@ -33,7 +35,9 @@
     "timeWeek": 0,
     "timeMonth": 0,
     "timeYear": 842,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-11-20": 1
+    }
   },
   {
     "name": "Client Onboarding — Benchmark",
@@ -116,9 +120,9 @@
     "url": "https://projectmanagement.wealthtechpros.com",
     "icon": "https://icons.duckduckgo.com/ip3/projectmanagement.wealthtechpros.com.ico",
     "slug": "project-management",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -127,7 +131,9 @@
     "timeWeek": 0,
     "timeMonth": 0,
     "timeYear": 153,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-11-20": 0
+    }
   },
   {
     "name": "WTP Assistant",
@@ -175,11 +181,11 @@
     "icon": "https://icons.duckduckgo.com/ip3/trust.wealthtechpros.com.ico",
     "slug": "trust-fabric-internal",
     "status": "up",
-    "uptime": "96.71%",
+    "uptime": "96.74%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
-    "uptimeYear": "96.71%",
+    "uptimeYear": "96.74%",
     "time": 684,
     "timeDay": 0,
     "timeWeek": 0,
