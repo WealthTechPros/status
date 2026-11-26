@@ -15,8 +15,9 @@ sites:
   # ---- Added 2026-07-02 (org sweep, all curl-verified live first) ----
   - name: WTP Marketing Site
     url: https://wealthtechpros.com
-  - name: Project Management
-    url: https://projectmanagement.wealthtechpros.com
+  # Retired on 2026-11-09. WealthTechPros/wtp-org#1609 removed the product DNS.
+  # - name: Project Management
+  #   url: https://projectmanagement.wealthtechpros.com
   - name: WTP Assistant
     url: https://assistant.wealthtechpros.com
   - name: Trust Fabric
