@@ -1,5 +1,7 @@
 owner: WealthTechPros
 repo: status
+# The public endpoints need no credentials. Upptime receives GH_PAT separately.
+secrets: []
 
 sites:
   - name: Client Onboarding — Prod
